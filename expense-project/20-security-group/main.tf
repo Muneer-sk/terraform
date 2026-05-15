@@ -3,5 +3,5 @@ module "mysql_sg" {
   project_name = var.project_name
   environment = var.environment
   component = var.component
-  vpc_id = 
+  vpc_id = var.vpc_id
 }
