@@ -1,42 +1,82 @@
-This module is going to create the following resources. for HA we are going to get first 2 AZ.
 
-VPC
-Internet Gateway associated with VPC
-2 Public Subnets
-2 Private Subnets
-2 Database Subnets
-Database subnet group
-EIP
-NAT Gateway
-Public Route table
-Private Route table
-Database Route table
-Routes
-Route table associations with subnets
-Peering with default VPC(if Required)
-Peering routes in acceptor and requestor route tables
-Inputs
-project_name (Mandatory): User must supply their project name.
-environment (Mandatory): User must supply their environment name.
-vpc_cidr (Mandatory): User must supply their VPC CIDR.
-enable_dns_hostnames (Optional): defaults to true.
-common_tags (Optional): Default is empty. User can supply tags in map(string) format.
-vpc_tags (Optional): Default is empty. User can supply tags in map(string) format.
-igw_tags (Optional): Default is empty. User can supply tags in map(string) format.
-public_subnet_cidrs (Mandatory): User must supply only 2 valid public subnet CIDR.
-public_subnet_tags (Optional): Default is empty. User can supply tags in map(string) format.
-private_subnet_cidrs (Mandatory): User must supply only 2 valid private subnet CIDR.
-private_subnet_tags (Optional): Default is empty. User can supply tags in map(string) format.
-database_subnet_cidrs (Mandatory): User must supply only 2 valid database subnet CIDR.
-database_subnet_tags (Optional): Default is empty. User can supply tags in map(string) format.
-db_subnet_group_tags (Optional): Default is empty. User can supply tags in map(string) format.
-nat_gateway_tags (Optional): Default is empty. User can supply tags in map(string) format.
-public_route_table_tags (Optional): Default is empty. User can supply tags in map(string) format.
-private_route_table_tags (Optional): Default is empty. User can supply tags in map(string) format.
-database_route_table_tags (Optional): Default is empty. User can supply tags in map(string) format.
+# VPC Terraform Module
 
-Outputs
-vpc_id: VPC ID created
-public_subnet_ids: list of 2 public subnet ids created
-private_subnet_ids: list of 2 private subnet ids created
-database_subnet_ids: list of 2 database subnet ids created
+## Overview
+
+This Terraform module provisions a **highly available VPC architecture** using the **first two Availability Zones (AZs)** in a region. It creates public, private, and database subnets along with required networking components such as an Internet Gateway, NAT Gateway, route tables, and optional VPC peering.
+
+---
+
+## Resources Created
+
+### Networking Core
+- VPC
+- Internet Gateway (associated with the VPC)
+- Elastic IP (EIP)
+- NAT Gateway
+
+### Subnets (Across 2 AZs for High Availability)
+- 2 Public Subnets
+- 2 Private Subnets
+- 2 Database Subnets
+
+### Routing
+- Public Route Table
+- Private Route Table
+- Database Route Table
+- Routes
+- Route table associations with all subnets
+
+### Database
+- Database Subnet Group
+
+### VPC Peering (Optional)
+- Peering connection with default VPC (if required)
+- Peering routes in:
+  - Requestor route tables
+  - Acceptor route tables
+
+---
+
+## Input Variables
+
+### Mandatory Inputs
+
+| Variable Name | Description |
+|--------------|------------|
+| `project_name` | Name of the project |
+| `environment` | Environment name (e.g., `dev`, `qa`, `prod`) |
+| `vpc_cidr` | CIDR block for the VPC |
+| `public_subnet_cidrs` | List of **exactly 2** valid public subnet CIDR blocks |
+| `private_subnet_cidrs` | List of **exactly 2** valid private subnet CIDR blocks |
+| `database_subnet_cidrs` | List of **exactly 2** valid database subnet CIDR blocks |
+
+---
+
+### Optional Inputs
+
+| Variable Name | Default | Description |
+|--------------|---------|-------------|
+| `enable_dns_hostnames` | `true` | Enable DNS hostnames in the VPC |
+| `common_tags` | `{}` | Common tags applied to all resources (`map(string)`) |
+| `vpc_tags` | `{}` | Tags specific to the VPC |
+| `igw_tags` | `{}` | Tags for the Internet Gateway |
+| `public_subnet_tags` | `{}` | Tags for public subnets |
+| `private_subnet_tags` | `{}` | Tags for private subnets |
+| `database_subnet_tags` | `{}` | Tags for database subnets |
+| `db_subnet_group_tags` | `{}` | Tags for the database subnet group |
+| `nat_gateway_tags` | `{}` | Tags for the NAT Gateway |
+| `public_route_table_tags` | `{}` | Tags for the public route table |
+| `private_route_table_tags` | `{}` | Tags for the private route table |
+| `database_route_table_tags` | `{}` | Tags for the database route table |
+
+---
+
+## Outputs
+
+| Output Name | Description |
+|------------|-------------|
+| `vpc_id` | ID of the created VPC |
+| `public_subnet_ids` | List of 2 created public subnet IDs |
+| `private_subnet_ids` | List of 2 created private subnet IDs |
+| `database_subnet_ids` | List of 2 created database subnet IDs |
