@@ -16,7 +16,7 @@ variable "common_tags" {
 }
 variable "project_name" {
   type = string
-  default = "project"
+  default = "expense"
 }
 variable "environment" {
   type = string
