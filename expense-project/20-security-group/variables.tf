@@ -7,7 +7,5 @@ variable "environment" {
 variable "component" {
   default = "mysql"
 }
-variable "vpc_id" {
-  
-}
+
 
