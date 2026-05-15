@@ -1,3 +1,3 @@
-data "aws_avalability_zone" "available" {
+data "aws_availability_zones" "available" {
     state = "available"
 }
